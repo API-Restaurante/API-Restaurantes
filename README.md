@@ -49,3 +49,13 @@ telas
 
 algum metodo de calculo relacionado ao tema
 ex: quantidade de restaurantes reservados
+
+--------------------------Instalar-----------------------------------
+
+- npm init -y
+
+- npm install (express, mongoose, bcrypt, dotenv, body-parser, cors, jsonwebtoken)
+
+--------------------------MongoDB-----------------------------------
+
+Acesso via URL ao banco cloud
