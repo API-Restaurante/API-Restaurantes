@@ -5,7 +5,7 @@ Sistema de reservas de restaurante
 model
 usuario:
 nome
-email
+email 
 senha (criptografada com bcrypt)
 nivel_permisao
 --------
