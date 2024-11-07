@@ -2,10 +2,9 @@
     "users": [
         {
             "id": 1,
-            "username": "teste",
-            "password": "123"
+            "username": "user1",
+            "password": "password1"
         }
     ],
-    
     "reservations": []
 }
