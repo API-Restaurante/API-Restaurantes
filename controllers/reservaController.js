@@ -16,6 +16,12 @@ exports.novaReserva = (req, res) => {
     const { usuarioId, dia, horario, local, quantidadePessoas } = req.body;
     const data = loadData();
 
+    const usuarioExistente = data.users.find(usuario => usuario.id === usuarioId);
+
+    if (!usuarioExistente) {
+        return res.status(400).json({ error: 'Usuário não encontrado.' });
+    }
+
     const reservaExistente = data.reservas.find(
         reserva => reserva.dia === dia && reserva.horario === horario && reserva.local === local
     );
@@ -32,6 +38,10 @@ exports.novaReserva = (req, res) => {
         local,
         quantidadePessoas
     };
+
+    if(!usuarioId){
+        return res.status(400).json({ mensagem: "usuario não identificado"})
+    }
 
     data.reservas.push(novaReserva);
     saveData(data); 
