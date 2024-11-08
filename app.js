@@ -8,12 +8,12 @@ require("dotenv").config();
 
 const app = express();
 
-//const connectDB = require("./config/db");
-// connectDB()
+const connectDB = require("./config/db");
+connectDB()
 
 app.use(bodyParser.json());
 app.use(express.json());
-//app.use(express.static('public'));
+app.use(express.static('public'));
 
 
 app.use("/reserva", reservaRoutes);
