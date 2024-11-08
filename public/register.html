@@ -1,37 +1,36 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Cadastro</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="/images/restauranteLogo.jfif">
 </head>
-
 <body class="bg-light">
     <div class="container d-flex align-items-center min-vh-100">
         <div class="row w-100">
             <div class="col-md-6 col-lg-4 mx-auto">
                 <div class="card shadow-sm">
                     <div class="card-body">
-                        <h3 class="text-center mb-4">Login</h3>
+                        <h3 class="text-center mb-4">Cadastro</h3>
                         <form>
                             <div class="form-group">
+                                <label for="nome">Nome</label>
+                                <input type="text" class="form-control" id="nome" placeholder="Digite seu nome" required>
+                            </div>
+                            <div class="form-group">
                                 <label for="email">Email</label>
-                                <input type="email" class="form-control" id="email" placeholder="Digite seu email"
-                                    required>
+                                <input type="email" class="form-control" id="email" placeholder="Digite seu email" required>
                             </div>
                             <div class="form-group">
                                 <label for="senha">Senha</label>
-                                <input type="password" class="form-control" id="senha" placeholder="Digite sua senha"
-                                    required>
+                                <input type="password" class="form-control" id="senha" placeholder="Digite sua senha" required>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+                            <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
                         </form>
                         <div class="text-center mt-3">
-                            <a href="register.html">Criar conta</a>
+                            <small>Já tem uma conta? <a href="index.html">Faça login</a></small>
                         </div>
                     </div>
                 </div>
@@ -44,5 +43,4 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
-
 </html>
