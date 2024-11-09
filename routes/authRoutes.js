@@ -10,9 +10,9 @@ router.post('/register', authController.register);
 router.post('/login', authController.login);
 
 // Rotas protegidas
-router.delete('/delete/:id', authController.delete);
-router.put('/update/:id', authController.update);
-router.get('/user/:id', authController.getUserById);
+router.delete('/delete/', authenticateToken, authController.delete);
+router.put('/update/:id', authenticateToken, authController.update);
+router.get('/user/:id', authenticateToken, authController.getUserById);
 router.get('/users', authenticateToken, authController.getUsers);
 
 // Rota protegida para o dashboard do admin

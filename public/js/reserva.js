@@ -1,9 +1,12 @@
-const usuarioId = "672e915d64f1701296c4112d";
-
 //Listar Reservas do usuario logado ao carregar a pagina 
 window.onload = async () => {
   try {
-    const response = await fetch(`/reserva/${usuarioId}`);
+    const response = await fetch('/reserva', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
 
     if (!response.ok) {
       throw new Error(`erro: ${response.statusText}`);
@@ -81,10 +84,11 @@ reservaForm.addEventListener('submit', async (event) => {
     };
 
     try {
-        const response = await fetch(`/reserva/${usuarioId}`, {
+        const response = await fetch("/reserva", {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
             body: JSON.stringify(novaReserva)
         });

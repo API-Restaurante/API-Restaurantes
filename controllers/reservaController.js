@@ -12,7 +12,7 @@ exports.listarTodasReservas = async (req, res) => {
 
 exports.novaReserva = async (req, res) =>{
         const {dia, horario, mesa, quantidadePessoas} = req.body
-        const usuarioId = req.params.usuarioId;
+        const usuarioId = req.userId;
 
         if (!usuarioId || !mongoose.Types.ObjectId.isValid(usuarioId)) {
             return res.status(400).json({ message: 'é obrigatório estar logado para fazer a reserva.' });
@@ -40,10 +40,10 @@ exports.novaReserva = async (req, res) =>{
 
 exports.listarReservas = async (req, res) => {
     try {
-        const reservas = await Reserva.find({ usuarioId: req.params.usuarioId });
+        const reservas = await Reserva.find({ usuarioId: req.userId });
 
         if(reservas.length === 0){
-            res.status(404).json({message: "Ainda não foram realizadas reservas"})
+            return  res.status(404).json({message: "Ainda não foram realizadas reservas"})
         }
 
         res.status(200).json(reservas);
