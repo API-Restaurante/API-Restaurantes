@@ -10,6 +10,7 @@ router.delete('/teste/:reservaId', reservaControllerTeste.cancelarReservaTeste);
 
 router.post('/:usuarioId', reservaController.novaReserva)
 router.get("/:usuarioId", reservaController.listarReservas)
+router.get("/", reservaController.listarTodasReservas)
 router.delete("/:reservaId", reservaController.cancelarReserva)
 
 module.exports = router;

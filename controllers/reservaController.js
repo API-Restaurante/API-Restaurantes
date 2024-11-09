@@ -1,6 +1,15 @@
 const Reserva = require("../models/Reserva")
 const mongoose = require("mongoose")
 
+exports.listarTodasReservas = async (req, res) => {
+    try{
+        const reservas = await Reserva.find()
+        res.status(201).json(reservas)
+    }catch{
+        res.status(404).json({message:"ocorreu um erro inesperado"})
+    }
+}
+
 exports.novaReserva = async (req, res) =>{
         const {dia, horario, mesa, quantidadePessoas} = req.body
         const usuarioId = req.params.usuarioId;

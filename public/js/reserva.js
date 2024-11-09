@@ -1,6 +1,6 @@
 const usuarioId = "672e915d64f1701296c4112d";
 
-//Listar Reservas
+//Listar Reservas do usuario logado ao carregar a pagina 
 window.onload = async () => {
   try {
     const response = await fetch(`/reserva/${usuarioId}`);
