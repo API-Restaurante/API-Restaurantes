@@ -85,14 +85,14 @@ exports.delete = async (req, res) => {
     }
 };
 
-// Rota para atualizar usuário
 exports.update = async (req, res) => {
     try {
         const { id } = req.params;
-        const { nome, email, senha } = req.body;
+        const { nome, email, senha, nivel_acesso } = req.body;
 
         // Preparar dados para atualização
-        const updateData = { nome, email };
+        const updateData = { nome, email, nivel_acesso };  // Incluindo o nivel_acesso
+
         if (senha) {
             updateData.senha = await bcrypt.hash(senha, 10);
         }
@@ -108,7 +108,8 @@ exports.update = async (req, res) => {
             user: {
                 id: updatedUser._id,
                 nome: updatedUser.nome,
-                email: updatedUser.email
+                email: updatedUser.email,
+                nivel_acesso: updatedUser.nivel_acesso  // Incluindo o nivel_acesso na resposta
             }
         });
     } catch (error) {
