@@ -1,12 +1,15 @@
 const express = require("express");
+const app = express();
 const bodyParser = require("body-parser");
+const methodOverride = require('method-override');
 
 const reservaRoutes = require("./routes/reservaRoutes");
-const userRoutes = require("./routes/userRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 require("dotenv").config();
 
-const app = express();
+// Middleware para permitir o uso do _method
+app.use(methodOverride('_method'));
 
 const connectDB = require("./config/db");
 connectDB()
@@ -16,9 +19,10 @@ app.use(express.json());
 app.use(express.static('public'));
 
 
-app.use("/reserva", reservaRoutes);
-app.use("/login", userRoutes);
 
+// Uso das rotas de usuário e reserva
+app.use('/api/auth', authRoutes);
+app.use("/reserva", reservaRoutes);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`rodano em http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Rodando em http://localhost:${PORT}`));
