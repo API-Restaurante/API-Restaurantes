@@ -1,71 +1,53 @@
-const fs = require('fs'); 
-const path = require('path'); 
+const Reserva = require("../models/Reserva")
+const mongoose = require("mongoose")
 
-const dataPath = path.join(__dirname, '../data/memoria.json'); //caminho da memoria JONSON
+exports.novaReserva = async (req, res) =>{
+        const {dia, horario, mesa, quantidadePessoas} = req.body
+        const usuarioId = req.params.usuarioId;
 
-function loadData() {
-    const data = fs.readFileSync(dataPath);
-    return JSON.parse(data);
+        if (!usuarioId || !mongoose.Types.ObjectId.isValid(usuarioId)) {
+            return res.status(400).json({ message: 'é obrigatório estar logado para fazer a reserva.' });
+        }
+
+    try{
+        const novaReserva = new Reserva({
+            usuarioId,
+            dia,
+            horario,
+            mesa,
+            quantidadePessoas,
+        });
+
+        await novaReserva.save();
+        res.status(201).json(novaReserva);
+    }catch(err){
+        if(err.code === 11000){
+            res.status(400).json({ message: 'não foi possivel reservar, pois essa mesa não está disponivel', err: err.message });
+        }else{
+            res.status(500).json({ message: 'Ocorreu um erro, tente novamente.', err: err.message });
+        }
+    }
 }
 
-function saveData(data) {
-    fs.writeFileSync(dataPath, JSON.stringify(data, null, 2));
-}
-
-exports.novaReserva = (req, res) => {
-    const { usuarioId, dia, horario, local, quantidadePessoas } = req.body;
-    const data = loadData();
-
-    const usuarioExistente = data.users.find(usuario => usuario.id === usuarioId);
-
-    if (!usuarioExistente) {
-        return res.status(400).json({ error: 'Usuário não encontrado.' });
+exports.listarReservas = async (req, res) => {
+    try {
+        const reservas = await Reserva.find({ usuarioId: req.params.usuarioId });
+        res.status(200).json(reservas);
+    } catch (err) {
+        res.status(500).json({ message: 'Erro ao listar reservas.', err:err.message });
     }
-
-    const reservaExistente = data.reservas.find(
-        reserva => reserva.dia === dia && reserva.horario === horario && reserva.local === local
-    );
-
-    if (reservaExistente) {
-        return res.status(400).json({ mensagem: 'Este horário já está reservado.' });
-    }
-
-    const novaReserva = {
-        id: data.reservas.length + 1,
-        usuarioId,
-        dia,
-        horario,
-        local,
-        quantidadePessoas
-    };
-
-    if(!usuarioId){
-        return res.status(400).json({ mensagem: "usuario não identificado"})
-    }
-
-    data.reservas.push(novaReserva);
-    saveData(data); 
-    res.status(201).json(novaReserva);
 };
 
-exports.listarReservas = (req, res) => {
-    const { usuarioId } = req.params;
-    const data = loadData();
+exports.cancelarReserva = async (req, res) => {
+    try {
+        const reservaCancelada = await Reserva.findByIdAndDelete(req.params.reservaId);
 
-    const reservasUsuario = data.reservas.filter(reserva => reserva.usuarioId === parseInt(usuarioId));
-    res.json(reservasUsuario);
-};
+        if (!reservaCancelada) {
+            return res.status(404).json({ message: 'Reserva não encontrada.' });
+        }
 
-exports.cancelarReserva = (req, res) => {
-    const { reservaId } = req.params;
-    const data = loadData();
-
-    const index = data.reservas.findIndex(reserva => reserva.id === parseInt(reservaId));
-    if (index === -1) {
-        return res.status(404).json({ mensagem: 'Reserva não encontrada.' });
+        res.status(200).json({ message: 'Reserva cancelada com sucesso.' });
+    } catch (err) {
+        res.status(500).json({ message: 'Erro ao cancelar reserva.', err: err.message  });
     }
-
-    const reservaCancelada = data.reservas.splice(index, 1)[0];
-    saveData(data); 
-    res.json({ mensagem: 'Reserva cancelada.', reserva: reservaCancelada });
 };

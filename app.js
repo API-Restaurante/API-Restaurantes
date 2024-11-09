@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const methodOverride = require('method-override');
 
 const reservaRoutes = require("./routes/reservaRoutes");
-const userRoutes = require("./routes/authRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 require("dotenv").config();
 
@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 // Uso das rotas de usuário e reserva
-app.use('/api/auth', userRoutes);
+app.use('/api/auth', authRoutes);
 app.use('/api/reservas', reservaRoutes); 
 
 const PORT = process.env.PORT || 5000;
