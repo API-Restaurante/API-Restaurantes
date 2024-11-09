@@ -32,6 +32,11 @@ exports.novaReserva = async (req, res) =>{
 exports.listarReservas = async (req, res) => {
     try {
         const reservas = await Reserva.find({ usuarioId: req.params.usuarioId });
+
+        if(reservas.length === 0){
+            res.status(404).json({message: "Ainda não foram realizadas reservas"})
+        }
+
         res.status(200).json(reservas);
     } catch (err) {
         res.status(500).json({ message: 'Erro ao listar reservas.', err:err.message });
@@ -40,8 +45,8 @@ exports.listarReservas = async (req, res) => {
 
 exports.cancelarReserva = async (req, res) => {
     try {
-        const reservaCancelada = await Reserva.findByIdAndDelete(req.params.reservaId);
-
+        const reservaCancelada = await Reserva.findByIdAndDelete(req.params.reservaId)
+            
         if (!reservaCancelada) {
             return res.status(404).json({ message: 'Reserva não encontrada.' });
         }
