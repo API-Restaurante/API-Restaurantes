@@ -1,0 +1,61 @@
+body {
+    display: flex;
+    background-color: #E1DEE3;
+}
+
+.sidebar {
+    height: 100vh;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #3A4F41;
+    color: white;
+    padding-top: 20px;
+}
+
+.sidebar a {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    display: block;
+    font-size: 18px;
+}
+
+.sidebar a:hover {
+    background-color: #575757;
+}
+
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+    flex-grow: 1;
+}
+
+.card {
+    margin-bottom: 20px;
+}
+
+.card-user-base{
+    background-color: #9e9aa0;
+}
+
+.btn-delete{
+    background-color: #BD5452;
+    color: #ffffff;
+}
+
+.btn-delete:hover{
+    background-color: #BD5452;
+    color: #ffffff;
+}
+
+.btn-edit{
+    background-color: #1481BA;
+    color: #ffffff;
+}
+
+.btn-edit:hover{
+    background-color: #1481BA;
+    color: #ffffff;
+}

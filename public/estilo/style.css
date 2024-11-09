@@ -1,25 +1,8 @@
-.btn-register{
-    background-color: #0fa3b1;
-    color: #ffffff;
-}
-
-.btn-register:hover {
-    background-color: #0fa3b1 !important;
-    color: #ffffff !important;
-}
-
-.btn-spacing {
-    margin-top: 200px;
-    background-color: #b33951;
-    color: #ffffff;
-}
-
-    .btn-spacing:hover {
-    background-color: #b33951;
-    color: #ffffff;
+body {
+    background-color: #3A4F41;
 }
 
 .btn-login{
-    background-color: #b33951;
+    background-color: #1481BA;
     color: #ffffff;
 }
