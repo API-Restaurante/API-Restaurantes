@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 // Uso das rotas de usuário e reserva
-app.use('/api/auth', userRoutes);
+app.use('/api/auth', authRoutes);
 app.use('/api/reservas', reservaRoutes); 
 
 const PORT = process.env.PORT || 5000;

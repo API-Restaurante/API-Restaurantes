@@ -20,7 +20,6 @@ exports.getUsers = async (req, res) => {
     }
 };
 
-
 // Rota de login
 exports.login = async (req, res) => {
     try {
