@@ -6,6 +6,27 @@ require("dotenv").config();
 // Defina uma chave secreta para assinar o token JWT (deve estar no arquivo .env)
 const JWT_SECRET = process.env.JWT_SECRET || 'default_secret_key';
 
+// Função para buscar os dados do usuário pelo ID
+exports.getUserById = async (req, res) => {
+    const { id } = req.params;  // Extrai o ID do parâmetro da URL
+
+    try {
+        const user = await User.findById(id); // Busca o usuário pelo ID
+
+        if (!user) {
+            return res.status(404).json({ message: 'Usuário não encontrado' });
+        }
+
+        // Retorna os dados do usuário, exceto a senha
+        const { senha, ...userData } = user.toObject();  // Retira a senha dos dados
+        res.json(userData);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Erro ao buscar o usuário' });
+    }
+};
+
+
 // Rota para listar todos os usuários
 exports.getUsers = async (req, res) => {
     try {
@@ -24,40 +45,27 @@ exports.getUsers = async (req, res) => {
 exports.login = async (req, res) => {
     try {
         const { email, senha } = req.body;
-
-        // Verificar se o usuário existe
         const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(404).json({ message: 'Usuário não encontrado' });
+
+        if (!user || !(await bcrypt.compare(senha, user.senha))) {
+            return res.status(401).json({ message: 'Credenciais incorretas' });
         }
 
-        // Verificar a senha
-        const isPasswordValid = await bcrypt.compare(senha, user.senha);
-        if (!isPasswordValid) {
-            return res.status(401).json({ message: 'Senha incorreta' });
-        }
+        const token = jwt.sign({ id: user._id, nivel_acesso: user.nivel_acesso }, JWT_SECRET, { expiresIn: '1h' });
 
-        // Gerar token JWT
-        const token = jwt.sign(
-            { id: user._id, email: user.email, nivel_acesso: user.nivel_acesso }, // Incluir 'nivel_acesso' no payload do token
-            JWT_SECRET,
-            { expiresIn: '1h' } // Expira em 1 hora
-        );
-
-        // Verificar o nível de acesso e redirecionar para a página correspondente
-        if (user.nivel_acesso === 1) {
-            // Se o usuário for administrador (nivel_acesso 1), redireciona para a página do administrador
-            return res.redirect('/admin-dashboard.html'); // Altere para o caminho correto da página de administração
-        } else {
-            // Se o usuário for comum (nivel_acesso 0), redireciona para a página do usuário
-            return res.redirect('/home.html'); // Altere para o caminho correto da página do usuário
-        }
-
+        // Retornar o token e o nível de acesso no JSON para o front-end
+        res.json({
+            message: 'Login bem-sucedido',
+            token,
+            nivel_acesso: user.nivel_acesso,
+        });
     } catch (error) {
         console.error("Erro ao fazer login:", error);
-        res.status(500).json({ message: 'Erro ao fazer login', error: error.message || "Erro desconhecido" });
+        res.status(500).json({ message: 'Erro ao fazer login' });
     }
 };
+
+
 
 // Rota para deletar usuário
 exports.delete = async (req, res) => {
@@ -107,7 +115,7 @@ exports.update = async (req, res) => {
         console.error("Erro ao atualizar usuário:", error);
         res.status(500).json({ message: 'Erro ao atualizar usuário', error: error.message || "Erro desconhecido" });
     }
-}
+};
 
 exports.register = async (req, res) => {
     try {

@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const methodOverride = require('method-override');
 
 const reservaRoutes = require("./routes/reservaRoutes");
-const userRoutes = require("./routes/authRoutes");
+const authRoutes = require("./routes/authRoutes");
 
 require("dotenv").config();
 
