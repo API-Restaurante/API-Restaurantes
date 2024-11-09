@@ -1,4 +1,5 @@
 const express = require("express");
+const app = express();
 const bodyParser = require("body-parser");
 const methodOverride = require('method-override');
 
@@ -9,20 +10,18 @@ require("dotenv").config();
 
 // Middleware para permitir o uso do _method
 app.use(methodOverride('_method'));
-// Suas rotas e outras configurações
-app.delete('/api/auth/delete/:id', authController.delete);
 
-const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Conexão com o banco de dados
 const connectDB = require("./config/db");
 connectDB();
 
 app.use(bodyParser.json());
-app.use(express.json());
 app.use(express.static('public'));
 
+// Uso das rotas de usuário e reserva
 app.use('/api/auth', userRoutes);
 app.use('/api/reservas', reservaRoutes); 
 
