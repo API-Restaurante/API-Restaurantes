@@ -1,61 +1,69 @@
-// Divisão das tarefas
+PREFIXO DAS ROTAS
+    
+    LOGIN
 
-Sistema de reservas de restaurante
+    /api/auth 
+--------------------
+    RESERVAS
 
-model
-usuario:
-nome
-email 
-senha (criptografada com bcrypt)
-nivel_permisao
---------
-reserva:
-horario
-local
-mesa
-usuario que reservou
---------
-restaurantes:
-imagem
-nome
-endereço
-status
----------
+    /reserva
 
-sistema de autenticação:
-rota:
-/register (post criar novo usuario)
-/login (autenticação com bcrypt.implementar)
+-----------------
+TESTE
 
-necessario admin e client
+    RESERVAS
 
-tratativa de erros: try catch; send.status().json
+    GET /teste
+    POST /teste/:usuarioId
+    DELETE /teste/:reservaId
+    -------------------------
+    LOGIN
 
-CRUD do tema
-post
-get
-put
-delete
+    POST /teste
+    -------------------------
 
-documentação completa
+PRODUÇÃO
 
-telas
-- gerenciamento de reservas
-- login e cadastro
-- gerenciamento de usuarios
-- lista de restaurantes 
+    RESERVAS
 
-------
+    POST /(necessario token) 
+    GET /(necessario token)
+    DELETE /reservaId
+    GET /todasReservas/(necessario token)
+    -------------------------
+    LOGIN
 
-algum metodo de calculo relacionado ao tema
-ex: quantidade de restaurantes reservados
+    POST /login
+    POST /register
+    DELETE /delete/userId/(necessario token)
+    UPDATE /update/userId/(necessario token)
+    GET /user/userId/(necessario token)
+    GET /users/(necessario token)
+--------------------------------------------
 
---------------------------Instalar-----------------------------------
+PARA RODAR O PROJETO
+npm init -y
+node app.js
 
-- npm init -y
+DEPENDENCIAS NECESSARIAS 
+npm install 
 
-- npm install (express, mongoose, bcrypt, dotenv, body-parser, cors, jsonwebtoken, express-validator)
+"dependencies": {
+        "bcrypt": "^5.1.1",
+        "body-parser": "^1.20.3",
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.5",
+        "express": "^4.21.1",
+        "express-validator": "^7.2.0",
+        "jsonwebtoken": "^9.0.2",
+        "method-override": "^3.0.0",
+        "mongoose": "^8.8.0"
+      }
 
---------------------------MongoDB-----------------------------------
+----------------------------------------
 
-Acesso via URL ao banco cloud
+VARIAVEIS DE AMBIENTE NECESSARIAS
+
+PORT=3000
+DATABASE_URL="mongodb+srv://hardwarestorealpha:(SENHA)@cluster0.sccn2.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+JWT_SECRET= (secret_key)

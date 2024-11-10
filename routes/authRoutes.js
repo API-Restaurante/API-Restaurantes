@@ -2,6 +2,11 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
 const authenticateToken = require('../middlewares/authMiddleware'); // Importe o middleware
+const { login } = require('../controllers/userControllerMemoria');
+
+
+//ROTA DE TESTE
+router.post('/teste', login);
 
 // Rota para Cadastrar usuário (não precisa de autenticação)
 router.post('/register', authController.register);
