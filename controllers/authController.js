@@ -2,6 +2,7 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require("dotenv").config();
+const path = require('path');
 
 // Defina uma chave secreta para assinar o token JWT (deve estar no arquivo .env)
 const JWT_SECRET = process.env.JWT_SECRET || 'default_secret_key';
@@ -53,7 +54,6 @@ exports.login = async (req, res) => {
 
         const token = jwt.sign({ id: user._id, nivel_acesso: user.nivel_acesso }, JWT_SECRET, { expiresIn: '1h' });
 
-        // Retornar o token e o nível de acesso no JSON para o front-end
         res.json({
             message: 'Login bem-sucedido',
             token,
@@ -64,8 +64,6 @@ exports.login = async (req, res) => {
         res.status(500).json({ message: 'Erro ao fazer login' });
     }
 };
-
-
 
 // Rota para deletar usuário
 exports.delete = async (req, res) => {

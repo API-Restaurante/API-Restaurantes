@@ -152,10 +152,6 @@
 
     <!-- Script de Funcionalidades -->
     <script>
-        // Redireciona para login caso o token não esteja presente
-        if (!localStorage.getItem("token")) {
-            window.location.href = "index.html";
-        }
 
         // Logout: remove o token e redireciona para a página de login
         document.getElementById("logout").addEventListener("click", function (event) {

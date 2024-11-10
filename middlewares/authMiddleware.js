@@ -1,27 +1,23 @@
-// authMiddleware.js
 const jwt = require('jsonwebtoken');
-require("dotenv").config();
-
-const JWT_SECRET = process.env.JWT_SECRET || 'default_secret_key';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 function authenticateToken(req, res, next) {
-    // Captura o token do cabeçalho Authorization
-    const authHeader = req.headers['authorization'];
-    const token = authHeader && authHeader.split(' ')[1];
+    // Pegue o token do cabeçalho de autorização
+    const token = req.headers['authorization']?.split(' ')[1];
 
     if (!token) {
-        return res.status(401).json({ message: 'Acesso negado. Token não fornecido.' });
+        return res.status(401).json({ message: 'Acesso negado: token ausente' });
     }
 
-    // Verifica e decodifica o token
+    // Verifique o token
     jwt.verify(token, JWT_SECRET, (err, user) => {
         if (err) {
-            return res.status(403).json({ message: 'Token inválido ou expirado.' });
+            return res.status(403).json({ message: 'Acesso negado: token inválido' });
         }
 
-        // Adiciona o usuário decodificado ao request para uso posterior
-        req.user = user;
-        next();
+        // Armazene o usuário no objeto de requisição
+        req.user = user; 
+        next(); // Passa para a próxima função (ou rota)
     });
 }
 
