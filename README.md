@@ -54,7 +54,7 @@ ex: quantidade de restaurantes reservados
 
 - npm init -y
 
-- npm install (express, mongoose, bcrypt, dotenv, body-parser, cors, jsonwebtoken)
+- npm install (express, mongoose, bcrypt, dotenv, body-parser, cors, jsonwebtoken, express-validator)
 
 --------------------------MongoDB-----------------------------------
 
