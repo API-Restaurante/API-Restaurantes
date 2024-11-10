@@ -21,7 +21,7 @@ exports.novaReserva = async (req, res) =>{
     try{
         const novaReserva = new Reserva({
             usuarioId,
-            dia,
+            dia: new Date(dia),
             horario,
             mesa,
             quantidadePessoas,

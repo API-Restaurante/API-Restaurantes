@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 
 const reservaSchema = mongoose.Schema({
     usuarioId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Usuario' },
-    dia: { type: String, required: true },
+    dia: { type: Date, required: true },
     horario: { type: String, required: true },
     mesa: { type: Number, required: true },
     quantidadePessoas: { type: Number, required: true },

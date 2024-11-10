@@ -38,7 +38,7 @@ window.onload = async () => {
           cardBody.innerHTML = `
             <h5 class="card-title">Reserva</h5>
             <p class="card-text">
-              <strong>Data:</strong> ${new Date(reserva.dia).toLocaleDateString()}<br>
+              <strong>Data:</strong> ${new Date(new Date(reserva.dia).getTime() + new Date().getTimezoneOffset() * 60000).toLocaleDateString()}<br>
               <strong>Horário:</strong> ${reserva.horario}<br>
               <strong>Mesa:</strong> ${reserva.mesa}<br>
               <strong>Pessoas:</strong> ${reserva.quantidadePessoas}
@@ -77,11 +77,11 @@ reservaForm.addEventListener('submit', async (event) => {
     const quantidadePessoas = document.getElementById('quantidadePessoas').value;
 
     const novaReserva = {
-        dia,
-        horario,
-        mesa,
-        quantidadePessoas
-    };
+      dia,
+      horario,
+      mesa,
+      quantidadePessoas
+  };
 
     try {
         const response = await fetch("/reserva", {
