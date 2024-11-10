@@ -14,6 +14,6 @@ router.get("/", authenticateToken, reservaController.listarReservas)
 router.delete("/:reservaId", reservaController.cancelarReserva)
 
 //Todas reservas do banco
-router.get("/", reservaController.listarTodasReservas)
+router.get("/todasReservas", authenticateToken, reservaController.listarTodasReservas)
 
 module.exports = router;

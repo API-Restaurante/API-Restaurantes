@@ -57,7 +57,6 @@
     <div class="sidebar">
         <h2 class="text-center text-white">Admin Dashboard</h2>
         <a href="#">Início</a>
-        <a href="#">Reservas</a>
         <a href="index.html" id="logout">Sair</a>
     </div>
 
@@ -75,6 +74,19 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="col-lg-4 col-md-6">
+                    <div class="card bg-primary text-white">
+                        <div class="card-body">
+                            <h2 id="reserveCount">
+                                0
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-primary" id="loadReservesBtn">Calcular Reservas</button>
+
             </div>
 
             <!-- Tabela de Usuários -->
@@ -100,6 +112,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -214,6 +227,54 @@
             }
         }
 
+        // Adiciona o event listener para o botão de carregamento
+        document.getElementById("loadReservesBtn").addEventListener("click", async function () {
+            try {
+                const token = localStorage.getItem("token");
+
+                const response = await fetch('/reserva/todasReservas', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const reservas = await response.json();
+                    console.log("Reservas:", reservas);
+
+                    // Inicia a animação de contagem a partir de zero até reservas.length
+                    animateCount(reservas.length);
+                } else {
+                    console.error("Erro ao buscar reservas:", response.statusText);
+                }
+            } catch (error) {
+                console.error("Erro na requisição:", error);
+            }
+        });
+
+        // Função para animar a contagem no elemento
+        function animateCount(targetCount) {
+            const reserveCountEl = document.getElementById("reserveCount");
+            let count = 0;
+            reserveCountEl.textContent = count; // Garante que o contador comece do zero
+
+            const interval = setInterval(() => {
+                if (count < targetCount) {
+                    count++;
+                    reserveCountEl.textContent = count;
+                } else {
+                    clearInterval(interval); // Para o loop ao alcançar o valor máximo
+                }
+            }, 60);
+                    // Chama a função para buscar e animar o número de reservas
+        fetchReserve();
+        }
+
+
+
+
         // Função para obter os dados completos do usuário e preencher o formulário
         async function loadUserData(userId) {
             try {
@@ -222,7 +283,7 @@
                 const response = await fetch(`/api/auth/user/${userId}`, {
                     method: 'GET',
                     headers: {
-                        'Authorization': `Bearer ${token}`,  
+                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
                     }
                 });
@@ -305,9 +366,10 @@
             try {
                 const response = await fetch(`/api/auth/delete/${userId}`, {
                     method: 'DELETE',
-                   headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`},
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    },
                 });
                 const result = await response.json();
                 if (response.ok) {
