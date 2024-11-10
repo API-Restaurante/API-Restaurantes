@@ -20,7 +20,7 @@ function authenticateToken(req, res, next) {
         }
 
         // Adiciona o usuário decodificado ao request para uso posterior
-        req.user = user;
+        req.userId = user.id;
         next();
     });
 }

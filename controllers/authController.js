@@ -8,10 +8,8 @@ const JWT_SECRET = process.env.JWT_SECRET || 'default_secret_key';
 
 // Função para buscar os dados do usuário pelo ID
 exports.getUserById = async (req, res) => {
-    const { id } = req.params;  // Extrai o ID do parâmetro da URL
-
     try {
-        const user = await User.findById(id); // Busca o usuário pelo ID
+        const user = await User.findById(req.userId);   
 
         if (!user) {
             return res.status(404).json({ message: 'Usuário não encontrado' });
@@ -70,7 +68,7 @@ exports.login = async (req, res) => {
 // Rota para deletar usuário
 exports.delete = async (req, res) => {
     try {
-        const { id } = req.params;
+        const id = req.user.id
 
         // Encontrar e deletar o usuário
         const deletedUser = await User.findByIdAndDelete(id);

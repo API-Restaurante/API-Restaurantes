@@ -251,9 +251,10 @@
         // Função para excluir um usuário
         async function deleteUser(userId) {
             try {
-                const response = await fetch(`/api/auth/delete/${userId}`, {
+                const response = await fetch(`/api/auth/delete/`, {
                     method: 'DELETE',
                     headers: { 'Content-Type': 'application/json' },
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 });
                 const result = await response.json();
                 if (response.ok) {
