@@ -20,3 +20,20 @@ p {
     background-color: #BD5452;
     color: #ffffff;
 }
+
+.btn-resrva{
+    background-color: #F64740;
+    color: #ffffff;
+    margin-top: 200px;
+    font-size: 22px;
+    width: 200px; 
+    height: 50px;      
+}
+
+.btn-resrva:hover{
+    background-color: #F64740;
+    color: #ffffff;
+    font-size: 22px;
+    width: 200px;
+    height: 50px; 
+}
