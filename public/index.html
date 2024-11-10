@@ -56,11 +56,10 @@
                 });
 
                 const data = await response.json();
-
                 if (response.ok) {
                     // Armazena o token no localStorage
                     localStorage.setItem("token", data.token);
-
+                    
                     // Redireciona com base no nível de acesso
                     if (data.nivel_acesso === 1) {
                         window.location.href = "/admin-dashboard.html";

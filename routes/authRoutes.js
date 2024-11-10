@@ -1,31 +1,33 @@
 const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
-const authenticateToken = require('../middlewares/authMiddleware');
+const authenticateToken = require('../middlewares/authMiddleware'); // Importe o middleware
 
-// Middleware para rotas protegidas (aplicado globalmente)
-router.use(authenticateToken);
+// Rota para Cadastrar usuário (não precisa de autenticação)
+router.post('/register', authController.register);
+
+// Rota para Login de usuário (não precisa de autenticação)
+router.post('/login', authController.login);
 
 // Rotas protegidas
-router.delete('/delete/:id', authController.delete);
-router.put('/update/:id', authController.update);
-router.get('/user/:id', authController.getUserById);
-router.get('/users', authController.getUsers);
+router.delete('/delete/:id', authenticateToken, authController.delete);
+router.put('/update/:id', authenticateToken, authController.update);
+router.get('/user/:id', authenticateToken, authController.getUserById);
+router.get('/users', authenticateToken, authController.getUsers);
 
-// Rota protegida do dashboard do admin
-router.get('/admin-dashboard', (req, res) => {
-    if (req.user.nivel_acesso !== 1) {
-        return res.status(403).json({ message: 'Acesso negado: apenas administradores podem acessar esta página.' });
+// Rota protegida para o dashboard do admin
+router.get('/admin-dashboard', authenticateToken, (req, res) => {
+    if (req.user.nivel_acesso === 1) {
+        res.sendFile(path.join(__dirname, '/admin-dashboard.html'));
+    } else {
+        res.status(403).json({ message: 'Acesso negado: apenas administradores podem acessar esta página.' });
     }
-    res.sendFile(path.join(__dirname, '/admin-dashboard.html'));
 });
 
-// Rota protegida para a página inicial do usuário comum
-router.get('/home', (req, res) => {
-    if (req.user.nivel_acesso !== 0) {
-        return res.status(403).json({ message: 'Acesso negado: apenas usuários comuns podem acessar esta página.' });
-    }
+// Rota protegida para o dashboard do usuário comum
+router.get('/home', authenticateToken, (req, res) => {
     res.sendFile(path.join(__dirname, '/home.html'));
 });
+
 
 module.exports = router;

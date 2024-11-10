@@ -23,7 +23,7 @@ app.use(express.static('public'));
 
 // Uso das rotas de usuário e reserva
 app.use('/api/auth', authRoutes);
-app.use('/api/reservas', reservaRoutes); 
+app.use('/reserva', reservaRoutes); 
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Rodando em http://localhost:${PORT}`));

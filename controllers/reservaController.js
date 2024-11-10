@@ -1,9 +1,18 @@
 const Reserva = require("../models/Reserva")
 const mongoose = require("mongoose")
 
+exports.listarTodasReservas = async (req, res) => {
+    try{
+        const reservas = await Reserva.find()
+        res.status(201).json(reservas)
+    }catch{
+        res.status(404).json({message:"ocorreu um erro inesperado"})
+    }
+}
+
 exports.novaReserva = async (req, res) =>{
         const {dia, horario, mesa, quantidadePessoas} = req.body
-        const usuarioId = req.params.usuarioId;
+        const usuarioId = req.userId;
 
         if (!usuarioId || !mongoose.Types.ObjectId.isValid(usuarioId)) {
             return res.status(400).json({ message: 'é obrigatório estar logado para fazer a reserva.' });
@@ -31,7 +40,12 @@ exports.novaReserva = async (req, res) =>{
 
 exports.listarReservas = async (req, res) => {
     try {
-        const reservas = await Reserva.find({ usuarioId: req.params.usuarioId });
+        const reservas = await Reserva.find({ usuarioId: req.userId });
+
+        if(reservas.length === 0){
+            return  res.status(404).json({message: "Ainda não foram realizadas reservas"})
+        }
+
         res.status(200).json(reservas);
     } catch (err) {
         res.status(500).json({ message: 'Erro ao listar reservas.', err:err.message });
@@ -40,8 +54,8 @@ exports.listarReservas = async (req, res) => {
 
 exports.cancelarReserva = async (req, res) => {
     try {
-        const reservaCancelada = await Reserva.findByIdAndDelete(req.params.reservaId);
-
+        const reservaCancelada = await Reserva.findByIdAndDelete(req.params.reservaId)
+            
         if (!reservaCancelada) {
             return res.status(404).json({ message: 'Reserva não encontrada.' });
         }

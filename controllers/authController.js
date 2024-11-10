@@ -2,17 +2,14 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require("dotenv").config();
-const path = require('path');
 
 // Defina uma chave secreta para assinar o token JWT (deve estar no arquivo .env)
 const JWT_SECRET = process.env.JWT_SECRET || 'default_secret_key';
 
 // Função para buscar os dados do usuário pelo ID
 exports.getUserById = async (req, res) => {
-    const { id } = req.params;  // Extrai o ID do parâmetro da URL
-
     try {
-        const user = await User.findById(id); // Busca o usuário pelo ID
+        const user = await User.findById(req.params.id);   
 
         if (!user) {
             return res.status(404).json({ message: 'Usuário não encontrado' });
@@ -34,6 +31,10 @@ exports.getUsers = async (req, res) => {
         // Buscar todos os usuários no banco
         const users = await User.find();
 
+        if (!users) {
+            return res.status(404).json({ message: 'Nenhum usuário encontrado' });
+        }
+
         // Retornar a lista de usuários
         res.status(200).json(users);
     } catch (error) {
@@ -54,6 +55,7 @@ exports.login = async (req, res) => {
 
         const token = jwt.sign({ id: user._id, nivel_acesso: user.nivel_acesso }, JWT_SECRET, { expiresIn: '1h' });
 
+        // Retornar o token e o nível de acesso no JSON para o front-end
         res.json({
             message: 'Login bem-sucedido',
             token,
@@ -65,13 +67,15 @@ exports.login = async (req, res) => {
     }
 };
 
+
+
 // Rota para deletar usuário
 exports.delete = async (req, res) => {
     try {
-        const { id } = req.params;
+        const usuarioId = req.params.id;
 
         // Encontrar e deletar o usuário
-        const deletedUser = await User.findByIdAndDelete(id);
+        const deletedUser = await User.findByIdAndDelete(usuarioId);
         if (!deletedUser) {
             return res.status(404).json({ message: 'Usuário não encontrado' });
         }
@@ -85,8 +89,8 @@ exports.delete = async (req, res) => {
 
 exports.update = async (req, res) => {
     try {
-        const { id } = req.params;
         const { nome, email, senha, nivel_acesso } = req.body;
+        const usuarioId = req.params.id;
 
         // Preparar dados para atualização
         const updateData = { nome, email, nivel_acesso };  // Incluindo o nivel_acesso
@@ -96,7 +100,7 @@ exports.update = async (req, res) => {
         }
 
         // Atualizar o usuário
-        const updatedUser = await User.findByIdAndUpdate(id, updateData, { new: true });
+        const updatedUser = await User.findByIdAndUpdate(usuarioId, updateData, { new: true });
         if (!updatedUser) {
             return res.status(404).json({ message: 'Usuário não encontrado' });
         }
@@ -104,7 +108,6 @@ exports.update = async (req, res) => {
         res.status(200).json({
             message: 'Usuário atualizado com sucesso',
             user: {
-                id: updatedUser._id,
                 nome: updatedUser.nome,
                 email: updatedUser.email,
                 nivel_acesso: updatedUser.nivel_acesso  // Incluindo o nivel_acesso na resposta
