@@ -166,11 +166,14 @@
 
         // Função para buscar usuários e preencher a tabela
         async function fetchUsers() {
+
+            const token = localStorage.getItem("token");
+
             try {
-                const token = localStorage.getItem("token");
-                const response = await fetch('/api/auth/users', {
+                const response = await fetch('/api/auth/users/', {
+                    method: 'GET',
                     headers: {
-                        'Authorization': `Bearer ${token}`,
+                        'Authorization': `Bearer ${token}`,  
                         'Content-Type': 'application/json'
                     }
                 });
@@ -214,7 +217,16 @@
         // Função para obter os dados completos do usuário e preencher o formulário
         async function loadUserData(userId) {
             try {
-                const response = await fetch(`/api/auth/user/${userId}`);
+                const token = localStorage.getItem("token");
+
+                const response = await fetch(`/api/auth/user/${userId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,  
+                        'Content-Type': 'application/json'
+                    }
+                });
+
                 if (!response.ok) {
                     throw new Error("Erro ao buscar dados do usuário");
                 }
@@ -291,10 +303,11 @@
         // Função para excluir um usuário
         async function deleteUser(userId) {
             try {
-                const response = await fetch(`/api/auth/delete/`, {
+                const response = await fetch(`/api/auth/delete/${userId}`, {
                     method: 'DELETE',
-                    headers: { 'Content-Type': 'application/json' },
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                   headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`},
                 });
                 const result = await response.json();
                 if (response.ok) {

@@ -10,7 +10,7 @@ router.post('/register', authController.register);
 router.post('/login', authController.login);
 
 // Rotas protegidas
-router.delete('/delete/', authenticateToken, authController.delete);
+router.delete('/delete/:id', authenticateToken, authController.delete);
 router.put('/update/:id', authenticateToken, authController.update);
 router.get('/user/:id', authenticateToken, authController.getUserById);
 router.get('/users', authenticateToken, authController.getUsers);
