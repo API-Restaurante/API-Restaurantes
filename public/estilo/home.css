@@ -1,0 +1,39 @@
+body {
+    background-image: url("https://cdn.prod.website-files.com/63d3c43a87589374d0a09844/650b6fd64489fbaafb088fab_MicrosoftTeams-image%20(30).jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+h1,
+p {
+    color: white;
+}
+
+
+.btn-spacing {
+    margin-top: 200px;
+    background-color: #BD5452;
+    color: #ffffff;
+}
+
+    .btn-spacing:hover {
+    background-color: #BD5452;
+    color: #ffffff;
+}
+
+.btn-resrva{
+    background-color: #F64740;
+    color: #ffffff;
+    margin-top: 200px;
+    font-size: 22px;
+    width: 200px; 
+    height: 50px;      
+}
+
+.btn-resrva:hover{
+    background-color: #F64740;
+    color: #ffffff;
+    font-size: 22px;
+    width: 200px;
+    height: 50px; 
+}

@@ -1,15 +1,29 @@
 const express = require("express");
 const app = express();
+const bodyParser = require("body-parser");
+const methodOverride = require('method-override');
 
-require('dotenv').config();
+const reservaRoutes = require("./routes/reservaRoutes");
+const authRoutes = require("./routes/authRoutes");
 
-const connectDB = require('./config/db')
-connectDB()
+require("dotenv").config();
 
-app.use(express.json())
+// Middleware para permitir o uso do _method
+app.use(methodOverride('_method'));
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Conexão com o banco de dados
+const connectDB = require("./config/db");
+connectDB();
+
+app.use(bodyParser.json());
 app.use(express.static('public'));
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () =>  console.log(`rodano em http://localhost:${PORT}`))
+// Uso das rotas de usuário e reserva
+app.use('/api/auth', authRoutes);
+app.use('/reserva', reservaRoutes); 
 
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Rodando em http://localhost:${PORT}`));

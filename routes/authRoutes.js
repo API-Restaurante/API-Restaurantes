@@ -1,41 +1,33 @@
-//Dependências
 const express = require('express');
-const router = express.Router(); //Controle de Rota do express
-const User = require('../models/User'); //Importa Usuário
+const router = express.Router();
+const authController = require('../controllers/authController');
+const authenticateToken = require('../middlewares/authMiddleware'); // Importe o middleware
 
-// Rota para Cadastro
-router.post('/register', async (req, res) => {
-    try {
-        const { nome, email, senha } = req.body;
-        // Validação dos dados (não implementada aqui por simplicidade)
-        const newUser = new User({ nome, email, senha });
-        await newUser.save();
-        res.status(201).json({ message: 'Usuário criado com sucesso!' });
-    } catch (error) {
-        console.error(error);   
+// Rota para Cadastrar usuário (não precisa de autenticação)
+router.post('/register', authController.register);
 
-        res.status(500).json({ error: 'Erro ao criar usuário' });
+// Rota para Login de usuário (não precisa de autenticação)
+router.post('/login', authController.login);
+
+// Rotas protegidas
+router.delete('/delete/:id', authenticateToken, authController.delete);
+router.put('/update/:id', authenticateToken, authController.update);
+router.get('/user/:id', authenticateToken, authController.getUserById);
+router.get('/users', authenticateToken, authController.getUsers);
+
+// Rota protegida para o dashboard do admin
+router.get('/admin-dashboard', authenticateToken, (req, res) => {
+    if (req.user.nivel_acesso === 1) {
+        res.sendFile(path.join(__dirname, '/admin-dashboard.html'));
+    } else {
+        res.status(403).json({ message: 'Acesso negado: apenas administradores podem acessar esta página.' });
     }
 });
 
-// Rota para login
-router.post('/login', async (req, res) => {
-    try {
-        const { email, senha } = req.body;
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(404).json({ error: 'Usuário não encontrado' });
-        }
-        const isMatch = await user.comparePassword(senha);
-        if (!isMatch) {
-            return res.status(401).json({ error: 'Senha incorreta' });
-        }
-        // Gerar token JWT (não implementado aqui)
-        res.json({ token: 'seuTokenAqui' });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Erro ao realizar login' });
-    }
+// Rota protegida para o dashboard do usuário comum
+router.get('/home', authenticateToken, (req, res) => {
+    res.sendFile(path.join(__dirname, '/home.html'));
 });
+
 
 module.exports = router;

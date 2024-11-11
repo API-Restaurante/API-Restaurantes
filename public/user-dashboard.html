@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Api-Restaurante</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet"> <!-- Font Awesome -->
+    <link href="estilo/user-dashboard.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Fazer uma reserva de mesa</h2>
+        <div class="card mb-5 card-pequeno">
+            <div class="card-body">
+                <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/08/a3/8b/espaco-tematico-e-super.jpg?w=700&h=-1&s=1" alt="Imagem de Reserva" class="img-reserva">
+                
+                <form id="reservaForm">
+                    <!-- Campo para selecionar o dia -->
+                    <div class="form-group">
+                        <label for="dia">Dia</label>
+                        <input type="date" class="form-control form-control-sm" id="dia" required>
+                    </div>
+                    
+                    <!-- Campo para selecionar o horário -->
+                    <div class="form-group">
+                        <label for="horario">Horário</label>
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-clock"></i></span>
+                            </div>
+                            <select class="form-control form-control-sm" id="horario" required>
+                                <option value="19:30">19:30</option>
+                                <option value="20:00">20:00</option>
+                                <option value="21:00">21:00</option>
+                                <option value="22:00">22:00</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Campo para selecionar a mesa com ícone -->
+                    <div class="form-group">
+                        <label for="mesa">Mesa</label>
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-chair"></i></span>
+                            </div>
+                            <select class="form-control form-control-sm" id="mesa" required>
+                                <script>
+                                    for (let i = 1; i <= 12; i++) {
+                                        document.write(`<option value="${i}">Mesa ${i}</option>`);
+                                    }
+                                </script>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Campo para quantidade de pessoas com ícone -->
+                    <div class="form-group">
+                        <label for="quantidadePessoas">Quantidade de Pessoas</label>
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="number" class="form-control form-control-sm" id="quantidadePessoas" min="1" max="4" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-warning">Reservar</button>
+                </form>
+            </div>
+        </div>
+    
+        <!-- Seção para exibir a reserva realizada -->
+        <div id="reservaCard" class="card card-pequeno" style="display: none;">
+            <div class="card-body">
+                <h5 class="card-title">Reserva Realizada</h5>
+                <p class="card-text">
+                    <i class="fas fa-clock"></i> <span id="horaReserva">19:30</span>
+                    <br>
+                    <i class="fas fa-chair"></i> <strong>Mesa:</strong> <span id="numeroMesa">1</span>
+                    <br>
+                    <i class="fas fa-user"></i> <strong>Pessoas:</strong> <span id="quantidadePessoasReserva">2</span>
+                </p>
+                <button id="cancelarReserva" class="btn btn-danger">Cancelar Reserva</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/user-dashboard.js"></script>
+    
+</body>
+</html>
