@@ -18,5 +18,6 @@ router.get("/todasReservas", authenticateToken, reservaController.listarTodasRes
 
 // Nova rota para filtrar reservas por data específica
 router.get("/filtrar", authenticateToken, reservaController.filtrarReservasPorData);
+router.get("/filtrar-inicial-e-final", authenticateToken, reservaController.filtrarReservasPorDataInicialEFinal);
 
 module.exports = router;

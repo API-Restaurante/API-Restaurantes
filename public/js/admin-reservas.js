@@ -126,4 +126,63 @@ window.onload = () => {
     const hoje = new Date().toISOString().split("T")[0]; // Formata a data de hoje como 'YYYY-MM-DD'
     document.getElementById("dateFilter").value = hoje;
     fetchReservasPorData(hoje); // Carrega as reservas de hoje automaticamente
+    fetchReservasUltimos7Dias(hoje);
 };
+
+
+// TAXA DE OCUPAÇÃO SEMANAL
+
+// Número total de mesas disponíveis por dia = 12 mesas x 4 horários = 48 mesas para reserva por dia
+const TOTAL_MESAS = 48;
+
+// Função para carregar reservas dos últimos 7 dias com base na data selecionada
+async function fetchReservasUltimos7Dias(dataSelecionada) {
+    const token = localStorage.getItem("token");
+    const dataInicial = new Date(dataSelecionada);
+    const dataFinal = new Date(dataSelecionada);
+    dataInicial.setDate(dataFinal.getDate() - 7);
+
+    try {
+        const response = await fetch(`/reserva/filtrar-inicial-e-final?dataInicial=${dataInicial.toISOString().split("T")[0]}&dataFinal=${dataFinal.toISOString().split("T")[0]}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error("Erro ao buscar reservas.");
+        }
+
+        const reservas = await response.json();
+
+        // Atualiza a tabela com reservas
+        atualizarTabelaReservas(reservas);
+
+        // Calcula a taxa de ocupação
+        calcularTaxaOcupacao(reservas);
+
+    } catch (error) {
+        console.error("Erro ao buscar reservas dos últimos 7 dias:", error);
+    }
+}
+
+// Função para calcular e exibir a taxa de ocupação
+function calcularTaxaOcupacao(reservas) {
+    // Conta o total de reservas feitas
+    const totalReservas = reservas.length;
+
+    // Calcula a taxa de ocupação semanal em porcentagem
+    const taxaOcupacao = ((totalReservas / (TOTAL_MESAS * 7)) * 100).toFixed(2);
+    console.log(reservas);
+
+    // Exibe a taxa de ocupação na interface
+    document.getElementById("occupancyRate").textContent = `${taxaOcupacao}%`;
+}
+
+// Modifica o evento de mudança de data para buscar reservas dos últimos 7 dias
+document.getElementById("dateFilter").addEventListener("change", function () {
+    const dataSelecionada = this.value;
+    fetchReservasUltimos7Dias(dataSelecionada);
+});
