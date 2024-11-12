@@ -157,3 +157,49 @@ async function deleteUser(userId) {
 
 // Chama a função fetchUsers ao carregar a página
 window.onload = fetchUsers;
+
+
+// Adiciona o event listener para o botão de carregamento
+document.getElementById("loadReservesBtn").addEventListener("click", async function () {
+    try {
+        const token = localStorage.getItem("token");
+
+        const response = await fetch('/reserva/todasReservas', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            const reservas = await response.json();
+            console.log("Reservas:", reservas);
+
+            // Inicia a animação de contagem a partir de zero até reservas.length
+            animateCount(reservas.length);
+        } else {
+            console.error("Erro ao buscar reservas:", response.statusText);
+        }
+    } catch (error) {
+        console.error("Erro na requisição:", error);
+    }
+});
+
+// Função para animar a contagem no elemento
+function animateCount(targetCount) {
+    const reserveCountEl = document.getElementById("reserveCount");
+    let count = 0;
+    reserveCountEl.textContent = count; // Garante que o contador comece do zero
+
+    const interval = setInterval(() => {
+        if (count < targetCount) {
+            count++;
+            reserveCountEl.textContent = count;
+        } else {
+            clearInterval(interval); // Para o loop ao alcançar o valor máximo
+        }
+    }, 60);
+            // Chama a função para buscar e animar o número de reservas
+fetchReserve();
+}
