@@ -65,3 +65,56 @@ exports.cancelarReserva = async (req, res) => {
         res.status(500).json({ message: 'Erro ao cancelar reserva.', err: err.message  });
     }
 };
+
+exports.filtrarReservasPorData = async (req, res) => {
+    try {
+        const data = req.query.data; // Captura o parâmetro de data da query
+        if (!data) {
+            return res.status(400).json({ message: "Data não fornecida" });
+        }
+
+        // Filtra as reservas pela data especificada
+        const reservas = await Reserva.find({ dia: new Date(data) });
+        
+        res.json(reservas);
+    } catch (error) {
+        console.error("Erro ao filtrar reservas por data:", error);
+        res.status(500).json({ message: "Erro ao filtrar reservas" });
+    }
+};
+
+// Função para filtrar reservas por intervalo de data
+exports.filtrarReservasPorDataInicialEFinal = async (req, res) => {
+    try {
+        const { dataInicial, dataFinal } = req.query;
+
+        if (!dataInicial || !dataFinal) {
+            return res.status(400).json({ message: 'É necessário fornecer uma data inicial e final.' });
+        }
+
+        // Converte as strings de data para objetos Date
+        const dataIni = new Date(dataInicial);
+        const dataFin = new Date(dataFinal);
+
+        // Ajusta a hora de 'dataIni' para 00:00:00 para garantir que a data inicial seja a partir de meia-noite
+        dataIni.setHours(0, 0, 0, 0);
+
+        // Ajusta a hora de 'dataFin' para 23:59:59 para garantir que a data final seja até o final do dia
+        dataFin.setHours(23, 59, 59, 999);
+
+        // Filtra as reservas no intervalo de datas fornecido
+        const reservas = await Reserva.find({
+            dia: { 
+                $gte: dataIni,  // Maior ou igual à data inicial
+                $lte: dataFin   // Menor ou igual à data final
+            }
+        });
+
+        // Retorna as reservas encontradas
+        res.status(200).json(reservas);
+
+    } catch (error) {
+        console.error("Erro ao filtrar reservas:", error);
+        res.status(500).json({ message: 'Erro interno ao filtrar reservas.' });
+    }
+};

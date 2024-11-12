@@ -16,48 +16,71 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <h2 class="text-center text-white mb-5">Admin Dashboard</h2>
-        <a href="#">Início</a>
-        <a href="admin-reservas.html">Reservas</a>
+        <a href="admin-dashboard.html">Início</a>
+        <a href="#">Reservas</a>
         <a href="index.html" id="logout">Sair</a>
     </div>
 
     <!-- Conteúdo principal -->
     <div class="main-content">
         <div class="container">
-            <h1 class=" mb-4">Bem-vindo ao Painel de Administração</h1>
+            <h1 class="mb-4">Painel de Administração de Reservas</h1>
 
-            <!-- Card de Contagem de Usuários -->
-            <div class="row">
-                <div class="col-lg-4 col-md-6">
-                    <div class="card card-user-base text-white">
-                        <div class="card-body">
-                            <h2 id="userCount"></h2>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <!-- Filtro de Data -->
+  <div class="row mb-4">
+    <div class="col-md-4">
+      <label for="dateFilter" class="form-label">Filtrar por Data</label>
+      <input type="date" class="form-control" id="dateFilter">
+    </div>
+    <div class="col-md-4">
+        <label for="occupancyRate" class="form-label">Taxa de ocupação semanal (últimos 7 dias)</label>
+        <h3 id="occupancyRate">taxa</h3>
+      </div>
+  </div>
 
-            <!-- Tabela de Usuários -->
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title">Últimos Usuários Cadastrados</h5>
-                </div>
-                <div class="card-body">
-                    <table class="table table-striped" id="userTable">
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>Email</th>
-                                <th>Excluir</th>
-                                <th>Editar</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Conteúdo da tabela será preenchido via JavaScript -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+  <!-- Tabela de Reservas -->
+  <div class="card mb-4">
+    <div class="card-header">
+      Reservas do Dia
+    </div>
+    <div class="card-body">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Horário</th>
+            <th>Mesa</th>
+            <th>Cliente</th>
+            <th>E-mail</th>
+            <th>Número de Pessoas</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>19:30</td>
+            <td>Mesa 1</td>
+            <td>João Silva</td>
+            <td>joao.silva@gmail.com</td>
+            <td>4</td>
+            <td>
+                <button class="cancelarReserva btn btn-danger">Cancelar Reserva</button>
+            </td>
+          </tr>
+          <tr>
+            <td>21:00</td>
+            <td>Mesa 2</td>
+            <td>Maria Oliveira</td>
+            <td>maria.oliveira@gmail.com</td>
+            <td>2</td>
+            <td>
+                <button class="cancelarReserva btn btn-danger">Cancelar Reserva</button>
+            </td>
+          </tr>
+          <!-- Exemplo de mais reservas -->
+        </tbody>
+      </table>
+    </div>
+  </div>
         </div>
     </div>
 
@@ -110,7 +133,7 @@
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
         crossorigin="anonymous"></script>
 
-  <script src="js/admin-dashboard.js"></script>
+  <script src="js/admin-reservas.js"></script>
   
 </body>
 
