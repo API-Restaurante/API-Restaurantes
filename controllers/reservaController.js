@@ -65,3 +65,20 @@ exports.cancelarReserva = async (req, res) => {
         res.status(500).json({ message: 'Erro ao cancelar reserva.', err: err.message  });
     }
 };
+
+exports.filtrarReservasPorData = async (req, res) => {
+    try {
+        const data = req.query.data; // Captura o parâmetro de data da query
+        if (!data) {
+            return res.status(400).json({ message: "Data não fornecida" });
+        }
+
+        // Filtra as reservas pela data especificada
+        const reservas = await Reserva.find({ dia: new Date(data) });
+        
+        res.json(reservas);
+    } catch (error) {
+        console.error("Erro ao filtrar reservas por data:", error);
+        res.status(500).json({ message: "Erro ao filtrar reservas" });
+    }
+};
